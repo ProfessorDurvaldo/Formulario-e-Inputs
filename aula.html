@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aula — Formulários HTML & CSS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════
+       VARIÁVEIS & RESET
+    ═══════════════════════════════════════════ */
+    :root {
+      --bg:        #f5f0e8;
+      --surface:   #fffdf7;
+      --border:    #d4c9b0;
+      --text:      #1a1208;
+      --muted:     #7a6e5a;
+      --accent:    #d4500a;
+      --accent2:   #2563eb;
+      --success:   #15803d;
+      --warn:      #b45309;
+      --code-bg:   #1e1a14;
+      --code-text: #e8dcc8;
+      --radius:    10px;
+      --font-body: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════
+       LAYOUT GERAL
+    ═══════════════════════════════════════════ */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      text-align: center;
+      margin-bottom: 4rem;
+      padding: 3rem 1rem 2rem;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        var(--border) 28px,
+        var(--border) 29px
+      );
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      position: relative;
+      margin-bottom: 0.8rem;
+    }
+    .hero h1 em {
+      color: var(--accent);
+      font-style: normal;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1rem;
+      position: relative;
+    }
+
+    /* ═══════════════════════════════════════════
+       ÍNDICE / NAV
+    ═══════════════════════════════════════════ */
+    .indice {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.4rem 2rem;
+    }
+    .indice-titulo {
+      grid-column: 1 / -1;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .indice a {
+      color: var(--accent2);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0;
+    }
+    .indice a:hover { text-decoration: underline; }
+    .indice a::before { content: '→'; color: var(--muted); }
+
+    /* ═══════════════════════════════════════════
+       SEÇÕES
+    ═══════════════════════════════════════════ */
+    .secao {
+      margin-bottom: 4rem;
+    }
+    .secao-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .secao-num {
+      background: var(--text);
+      color: var(--bg);
+      font-size: 0.75rem;
+      font-weight: 800;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+    }
+    .secao-header h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* ═══════════════════════════════════════════
+       CARDS DE INPUT (grade dos exemplos)
+    ═══════════════════════════════════════════ */
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .input-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .input-card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .input-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .input-card code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: #ede8df;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCOS DE CÓDIGO
+    ═══════════════════════════════════════════ */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .code-block-header {
+      background: #2d2720;
+      padding: 0.45rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #a89880;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .code-block pre {
+      padding: 1.2rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--code-text);
+      overflow-x: auto;
+      line-height: 1.75;
+      white-space: pre;
+    }
+    .kw  { color: #f97316; }   /* keyword - laranja */
+    .at  { color: #facc15; }   /* attribute - amarelo */
+    .vl  { color: #86efac; }   /* value - verde */
+    .cm  { color: #6b7280; font-style: italic; }  /* comment - cinza */
+    .tg  { color: #93c5fd; }   /* tag - azul */
+    .pr  { color: #c4b5fd; }   /* property css - roxo */
+    .sl  { color: #f9a8d4; }   /* selector - rosa */
+
+    /* ═══════════════════════════════════════════
+       DICAS / ALERTAS
+    ═══════════════════════════════════════════ */
+    .dica {
+      border-left: 4px solid var(--accent2);
+      background: #eff6ff;
+      padding: 0.8rem 1rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      color: #1e3a8a;
+      margin: 1rem 0;
+      line-height: 1.6;
+    }
+    .dica.warn {
+      border-color: var(--warn);
+      background: #fffbeb;
+      color: #78350f;
+    }
+    .dica.ok {
+      border-color: var(--success);
+      background: #f0fdf4;
+      color: #14532d;
+    }
+    .dica strong { font-weight: 700; }
+
+    /* ═══════════════════════════════════════════
+       TABELA DE ATRIBUTOS
+    ═══════════════════════════════════════════ */
+    .tabela-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      background: var(--surface);
+    }
+    thead tr { background: var(--text); color: var(--bg); }
+    thead th {
+      padding: 0.65rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    tbody tr { border-top: 1px solid var(--border); }
+    tbody tr:hover { background: #f5efe4; }
+    tbody td { padding: 0.65rem 1rem; line-height: 1.5; }
+    tbody td:first-child { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+
+    /* ═══════════════════════════════════════════
+       CSS — CARDS DE PROPRIEDADES
+    ═══════════════════════════════════════════ */
+    .css-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .css-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .css-card-titulo {
+      background: var(--text);
+      color: var(--bg);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.55rem 1rem;
+      letter-spacing: 0.05em;
+    }
+    .css-card-corpo {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .css-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ═══════════════════════════════════════════
+       SEÇÃO DO PROJETO — MINI FORMULÁRIO AO VIVO
+    ═══════════════════════════════════════════ */
+    .projeto-box {
+      background: var(--surface);
+      border: 2px solid var(--text);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .projeto-header {
+      background: var(--text);
+      color: var(--bg);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .projeto-header h3 { font-size: 1.1rem; font-weight: 800; }
+    .projeto-header p { font-size: 0.8rem; opacity: 0.7; margin-top: 0.1rem; }
+    .projeto-corpo { padding: 2rem 1.5rem; }
+
+    /* O formulário do projeto em si (estilizado como produto final) */
+    .form-projeto {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .form-projeto-titulo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+    .form-projeto-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+    }
+    .form-grupo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .form-grupo label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.03em;
+    }
+    .form-grupo label span {
+      color: var(--accent);
+      margin-left: 2px;
+    }
+    .form-grupo small {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* Inputs estilizados do projeto */
+    .form-projeto input[type="text"],
+    .form-projeto input[type="email"],
+    .form-projeto input[type="tel"],
+    .form-projeto input[type="number"],
+    .form-projeto input[type="date"],
+    .form-projeto input[type="password"],
+    .form-projeto select,
+    .form-projeto textarea {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-projeto input:focus,
+    .form-projeto select:focus,
+    .form-projeto textarea:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .form-projeto input:invalid:not(:placeholder-shown) {
+      border-color: var(--accent);
+    }
+    .form-projeto textarea { resize: vertical; min-height: 90px; }
+
+    .form-linha {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .radio-grupo, .check-grupo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .radio-item, .check-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .radio-item input, .check-item input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent2);
+      cursor: pointer;
+    }
+
+    .range-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .form-projeto input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent2);
+      padding: 0;
+      border: none;
+      box-shadow: none;
+    }
+    .range-val {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent2);
+      font-weight: 600;
+      min-width: 2.5rem;
+      text-align: right;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1.5px solid var(--border);
+      margin: 1.8rem 0;
+    }
+
+    .btn-enviar {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-enviar:hover { background: var(--accent); }
+    .btn-enviar:active { transform: scale(0.98); }
+
+    .form-rodape {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       ROTEIRO DE AULA
+    ═══════════════════════════════════════════ */
+    .roteiro {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .roteiro-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .roteiro-item:last-child { border-bottom: none; }
+    .roteiro-num {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      width: 2.5rem;
+      flex-shrink: 0;
+      padding-top: 0.1rem;
+    }
+    .roteiro-conteudo strong { display: block; font-size: 0.92rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .roteiro-conteudo p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+
+    /* ═══════════════════════════════════════════
+       UTILITÁRIOS
+    ═══════════════════════════════════════════ */
+    .mt { margin-top: 1.2rem; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <div class="hero">
+    <div class="hero-tag">Aula — Noturno</div>
+    <h1>Formulários <em>HTML</em><br>& CSS</h1>
+    <p>Inputs, atributos, estilos e um projeto do zero</p>
+  </div>
+
+  <!-- ══════════════ ÍNDICE ══════════════ -->
+  <nav class="indice">
+    <div class="indice-titulo">📋 Conteúdo da aula</div>
+    <a href="#inputs">Tipos de input</a>
+    <a href="#atributos">Atributos importantes</a>
+    <a href="#css">CSS para formulários</a>
+    <a href="#projeto">Projeto da aula</a>
+    <a href="#roteiro">Roteiro de aula</a>
+  </nav>
+
+  <!-- ══════════════ SEÇÃO 1 — TIPOS DE INPUT ══════════════ -->
+  <section class="secao" id="inputs">
+    <div class="secao-header">
+      <div class="secao-num">01</div>
+      <h2>Tipos de <code style="font-family:var(--font-mono);font-size:1rem;background:#ede8df;padding:0.1rem 0.4rem;border-radius:4px;">input</code></h2>
+    </div>
+
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.2rem;">
+      Todo formulário começa com a tag <code style="font-family:var(--font-mono);font-size:0.82rem;background:#ede8df;padding:0.1rem 0.35rem;border-radius:4px;">&lt;form&gt;</code>. Dentro dela usamos inputs, labels, selects e botões. O atributo <code style="font-family:var(--font-mono);font-size:0.82rem;background:#ede8df;padding:0.1rem 0.35rem;border-radius:4px;">type</code> define o comportamento de cada campo.
+    </p>
+
+    <div class="inputs-grid">
+
+      <div class="input-card">
+        <div class="input-card-label">📝 text</div>
+        <input type="text" placeholder="Digite seu nome" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+        <p>Campo de texto genérico. É o mais usado.<br>Use para nomes, endereços, qualquer texto livre.</p>
+        <code>&lt;input type="text"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">✉️ email</div>
+        <input type="email" placeholder="voce@email.com" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+        <p>Valida automaticamente o formato de e-mail. No celular abre teclado com "@".</p>
+        <code>&lt;input type="email"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">🔒 password</div>
+        <input type="password" placeholder="••••••••" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+        <p>Esconde o que o usuário digita. Nunca use <code>type="text"</code> para senhas!</p>
+        <code>&lt;input type="password"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">📞 tel</div>
+        <input type="tel" placeholder="(38) 99999-9999" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+        <p>Abre teclado numérico no celular. Não valida o formato — use <code>pattern</code> para isso.</p>
+        <code>&lt;input type="tel"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">🔢 number</div>
+        <input type="number" placeholder="0" min="0" max="100" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+        <p>Aceita apenas números. Suporta <code>min</code>, <code>max</code> e <code>step</code>.</p>
+        <code>&lt;input type="number" min="0" max="100"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">📅 date</div>
+        <input type="date" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+        <p>Abre um calendário nativo do navegador. Retorna data no formato <code>YYYY-MM-DD</code>.</p>
+        <code>&lt;input type="date"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">🎚️ range</div>
+        <input type="range" min="0" max="100" value="50" style="width:100%;accent-color:#2563eb;">
+        <p>Slider visual. Usado quando o valor exato importa menos que a faixa. Use com <code>min</code>, <code>max</code> e <code>step</code>.</p>
+        <code>&lt;input type="range" min="0" max="100"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">🔘 radio</div>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;">
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;cursor:pointer;">
+            <input type="radio" name="ex-radio" value="a" style="accent-color:#2563eb;"> Opção A
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;cursor:pointer;">
+            <input type="radio" name="ex-radio" value="b" style="accent-color:#2563eb;"> Opção B
+          </label>
+        </div>
+        <p>Só uma opção pode ser selecionada. Todos do mesmo grupo precisam do <strong>mesmo</strong> <code>name</code>.</p>
+        <code>&lt;input type="radio" name="grupo"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">☑️ checkbox</div>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;">
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;cursor:pointer;">
+            <input type="checkbox" style="accent-color:#2563eb;"> HTML
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;cursor:pointer;">
+            <input type="checkbox" style="accent-color:#2563eb;"> CSS
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;cursor:pointer;">
+            <input type="checkbox" style="accent-color:#2563eb;"> JavaScript
+          </label>
+        </div>
+        <p>Permite múltiplas seleções. Diferente do radio, não precisam ter o mesmo <code>name</code>.</p>
+        <code>&lt;input type="checkbox"&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">📋 select</div>
+        <select style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;">
+          <option value="">Selecione...</option>
+          <option>Taiobeiras</option>
+          <option>Montes Claros</option>
+          <option>Salinas</option>
+        </select>
+        <p>Lista de opções para o usuário escolher. Use <code>&lt;option&gt;</code> dentro do <code>&lt;select&gt;</code>.</p>
+        <code>&lt;select&gt;&lt;option&gt;...&lt;/option&gt;&lt;/select&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">📄 textarea</div>
+        <textarea placeholder="Escreva sua mensagem..." rows="3" style="width:100%;padding:0.55rem 0.8rem;border:2px solid #d4c9b0;border-radius:7px;font-family:var(--font-body);font-size:0.88rem;background:var(--bg);outline:none;resize:vertical;"></textarea>
+        <p>Campo de texto com múltiplas linhas. Diferente do <code>input</code>, possui tag de fechamento.</p>
+        <code>&lt;textarea rows="4"&gt;&lt;/textarea&gt;</code>
+      </div>
+
+      <div class="input-card">
+        <div class="input-card-label">📁 file</div>
+        <input type="file" style="font-size:0.82rem;font-family:var(--font-body);">
+        <p>Permite o usuário selecionar um arquivo. Use <code>accept</code> para filtrar tipos.</p>
+        <code>&lt;input type="file" accept=".pdf,.jpg"&gt;</code>
+      </div>
+
+    </div><!-- /inputs-grid -->
+
+    <div class="dica mt">
+      💡 <strong>Sempre use &lt;label&gt;!</strong> O label conecta o texto ao input. Quando o usuário clica no texto, o campo recebe o foco. Use o atributo <code>for</code> no label com o mesmo valor do <code>id</code> do input — ou envolva o input dentro do label.
+    </div>
+
+  </section>
+
+  <!-- ══════════════ SEÇÃO 2 — ATRIBUTOS ══════════════ -->
+  <section class="secao" id="atributos">
+    <div class="secao-header">
+      <div class="secao-num">02</div>
+      <h2>Atributos importantes</h2>
+    </div>
+
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.2rem;">
+      Os atributos controlam o comportamento dos campos — validação, valor padrão, obrigatoriedade e muito mais. Tudo isso <strong>sem JavaScript</strong>.
+    </p>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Atributo</th>
+            <th>O que faz</th>
+            <th>Exemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>name</td>
+            <td>Nome do campo no envio do formulário. <strong>Obrigatório</strong> para o dado ser enviado.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">name="email"</code></td>
+          </tr>
+          <tr>
+            <td>id</td>
+            <td>Identificador único na página. Usado para conectar com o <code>&lt;label for="..."&gt;</code>.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">id="campo-email"</code></td>
+          </tr>
+          <tr>
+            <td>placeholder</td>
+            <td>Texto de exemplo exibido quando o campo está vazio. Desaparece ao digitar.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">placeholder="Ex: Ana"</code></td>
+          </tr>
+          <tr>
+            <td>required</td>
+            <td>Torna o campo obrigatório. O navegador bloqueia o envio se estiver vazio.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">required</code></td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>Define um valor padrão já preenchido no campo.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">value="Brasil"</code></td>
+          </tr>
+          <tr>
+            <td>disabled</td>
+            <td>Desabilita o campo — o usuário não consegue interagir e o dado não é enviado.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">disabled</code></td>
+          </tr>
+          <tr>
+            <td>readonly</td>
+            <td>Campo visível e selecionável mas não editável. O dado é enviado normalmente.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">readonly</code></td>
+          </tr>
+          <tr>
+            <td>min / max</td>
+            <td>Define o valor mínimo e máximo para inputs numéricos e de data.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">min="1" max="100"</code></td>
+          </tr>
+          <tr>
+            <td>minlength / maxlength</td>
+            <td>Define o mínimo e máximo de caracteres para campos de texto.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">minlength="8"</code></td>
+          </tr>
+          <tr>
+            <td>pattern</td>
+            <td>Valida o campo com uma expressão regular (regex). Poderoso mas avançado.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">pattern="[0-9]{8}"</code></td>
+          </tr>
+          <tr>
+            <td>autocomplete</td>
+            <td>Sugere valores salvos pelo navegador. Use <code>off</code> para desativar em senhas.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">autocomplete="off"</code></td>
+          </tr>
+          <tr>
+            <td>autofocus</td>
+            <td>Foca automaticamente no campo quando a página carrega.</td>
+            <td><code style="font-family:var(--font-mono);font-size:0.78rem;">autofocus</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block mt">
+      <div class="code-block-header">📄 HTML — exemplo com vários atributos</div>
+      <pre><span class="tg">&lt;form</span> <span class="at">action</span>=<span class="vl">"/cadastro"</span> <span class="at">method</span>=<span class="vl">"POST"</span><span class="tg">&gt;</span>
+
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"nome"</span><span class="tg">&gt;</span>Nome completo<span class="tg">&lt;/label&gt;</span>
+  <span class="tg">&lt;input</span>
+    <span class="at">type</span>=<span class="vl">"text"</span>
+    <span class="at">id</span>=<span class="vl">"nome"</span>
+    <span class="at">name</span>=<span class="vl">"nome"</span>
+    <span class="at">placeholder</span>=<span class="vl">"Ex: João Silva"</span>
+    <span class="at">required</span>
+    <span class="at">minlength</span>=<span class="vl">"3"</span>
+    <span class="at">autofocus</span>
+  <span class="tg">/&gt;</span>
+
+  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"email"</span><span class="tg">&gt;</span>E-mail<span class="tg">&lt;/label&gt;</span>
+  <span class="tg">&lt;input</span>
+    <span class="at">type</span>=<span class="vl">"email"</span>
+    <span class="at">id</span>=<span class="vl">"email"</span>
+    <span class="at">name</span>=<span class="vl">"email"</span>
+    <span class="at">placeholder</span>=<span class="vl">"voce@email.com"</span>
+    <span class="at">required</span>
+    <span class="at">autocomplete</span>=<span class="vl">"email"</span>
+  <span class="tg">/&gt;</span>
+
+  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="vl">"submit"</span><span class="tg">&gt;</span>Enviar<span class="tg">&lt;/button&gt;</span>
+
+<span class="tg">&lt;/form&gt;</span></pre>
+    </div>
+
+    <div class="dica warn mt">
+      ⚠️ <strong>action e method:</strong> o <code>action</code> define para onde os dados vão (URL do servidor). O <code>method</code> define como: <code>GET</code> coloca os dados na URL (visível), <code>POST</code> envia no corpo da requisição (seguro para dados sensíveis).
+    </div>
+
+  </section>
+
+  <!-- ══════════════ SEÇÃO 3 — CSS ══════════════ -->
+  <section class="secao" id="css">
+    <div class="secao-header">
+      <div class="secao-num">03</div>
+      <h2>CSS para formulários</h2>
+    </div>
+
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.4rem;">
+      Inputs têm estilo padrão do navegador que costuma ser feio e diferente em cada sistema. O CSS abaixo mostra como controlar cada aspecto visual.
+    </p>
+
+    <div class="css-grid">
+
+      <div class="css-card">
+        <div class="css-card-titulo">🖼️ Aparência base</div>
+        <div class="css-card-corpo">
+          <p>Remove o estilo padrão e define borda, padding e fonte do zero.</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input, select, textarea</span> {
+  <span class="pr">width</span>: <span class="vl">100%</span>;
+  <span class="pr">padding</span>: <span class="vl">0.65rem 0.9rem</span>;
+  <span class="pr">border</span>: <span class="vl">2px solid #ccc</span>;
+  <span class="pr">border-radius</span>: <span class="vl">8px</span>;
+  <span class="pr">font-family</span>: <span class="vl">inherit</span>;
+  <span class="pr">font-size</span>: <span class="vl">1rem</span>;
+  <span class="pr">background</span>: <span class="vl">#fff</span>;
+  <span class="pr">outline</span>: <span class="vl">none</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">🎯 Estado :focus</div>
+        <div class="css-card-corpo">
+          <p>Estiliza o campo quando o usuário clica nele. Nunca remova o foco sem substituir — é acessibilidade!</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input:focus,
+textarea:focus</span> {
+  <span class="pr">border-color</span>: <span class="vl">#2563eb</span>;
+  <span class="pr">box-shadow</span>: <span class="vl">0 0 0 3px
+    rgba(37,99,235,0.2)</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">❌ Estado :invalid</div>
+        <div class="css-card-corpo">
+          <p>CSS puro aplicado quando o campo falha na validação HTML (ex: email errado ou campo <code>required</code> vazio).</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input:invalid:not(
+  :placeholder-shown
+)</span> {
+  <span class="pr">border-color</span>: <span class="vl">#ef4444</span>;
+  <span class="pr">background</span>: <span class="vl">#fff5f5</span>;
+}</pre>
+          </div>
+          <p>O <code>:not(:placeholder-shown)</code> evita mostrar o erro antes do usuário digitar.</p>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">✅ Estado :valid</div>
+        <div class="css-card-corpo">
+          <p>Aplica estilo quando o campo está preenchido corretamente. Ótimo para dar feedback positivo.</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input:valid:not(
+  :placeholder-shown
+)</span> {
+  <span class="pr">border-color</span>: <span class="vl">#22c55e</span>;
+  <span class="pr">background</span>: <span class="vl">#f0fdf4</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">🚫 Estado :disabled</div>
+        <div class="css-card-corpo">
+          <p>Estiliza campos desabilitados visualmente. O cursor <code>not-allowed</code> reforça o feedback ao usuário.</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input:disabled</span> {
+  <span class="pr">background</span>: <span class="vl">#f1f5f9</span>;
+  <span class="pr">color</span>: <span class="vl">#94a3b8</span>;
+  <span class="pr">cursor</span>: <span class="vl">not-allowed</span>;
+  <span class="pr">border-color</span>: <span class="vl">#e2e8f0</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">🎨 Placeholder</div>
+        <div class="css-card-corpo">
+          <p>Estiliza o texto de exemplo dentro do campo. É um pseudo-elemento separado.</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input::placeholder</span> {
+  <span class="pr">color</span>: <span class="vl">#94a3b8</span>;
+  <span class="pr">font-style</span>: <span class="vl">italic</span>;
+  <span class="pr">font-size</span>: <span class="vl">0.9em</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">🎚️ accent-color</div>
+        <div class="css-card-corpo">
+          <p>Muda a cor de checkboxes, radios e range sliders com <strong>uma linha de CSS</strong>. Muito mais fácil que customizar do zero!</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">input[type="checkbox"],
+input[type="radio"],
+input[type="range"]</span> {
+  <span class="pr">accent-color</span>: <span class="vl">#2563eb</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="css-card">
+        <div class="css-card-titulo">📐 Layout com Flexbox</div>
+        <div class="css-card-corpo">
+          <p>Agrupe campos lado a lado com flexbox ou grid. Padrão para colocar campos como nome/sobrenome na mesma linha.</p>
+          <div class="code-block" style="margin:0;">
+            <pre style="font-size:0.75rem;"><span class="sl">.form-linha</span> {
+  <span class="pr">display</span>: <span class="vl">grid</span>;
+  <span class="pr">grid-template-columns</span>:
+    <span class="vl">1fr 1fr</span>;
+  <span class="pr">gap</span>: <span class="vl">1rem</span>;
+}</pre>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /css-grid -->
+
+    <div class="dica ok mt">
+      ✅ <strong>Dica de acessibilidade:</strong> sempre use <code>outline: none</code> junto com um <code>box-shadow</code> ou <code>border</code> no <code>:focus</code>. Remover o outline sem substituir prejudica usuários que navegam pelo teclado.
+    </div>
+
+  </section>
+
+  <!-- ══════════════ SEÇÃO 4 — PROJETO ══════════════ -->
+  <section class="secao" id="projeto">
+    <div class="secao-header">
+      <div class="secao-num">04</div>
+      <h2>Projeto da aula — Ficha de Cadastro</h2>
+    </div>
+
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">
+      Construa esse formulário com os alunos do zero durante a aula. Ele reúne <strong>todos os tipos de input</strong> e as principais técnicas de CSS vistos acima. O resultado final está abaixo como referência.
+    </p>
+
+    <div class="projeto-box">
+      <div class="projeto-header">
+        <div>
+          <h3>📋 Ficha de Cadastro de Aluno</h3>
+          <p>Resultado final do projeto — construído ao vivo</p>
+        </div>
+      </div>
+      <div class="projeto-corpo">
+
+        <form class="form-projeto" onsubmit="handleSubmit(event)">
+          <div class="form-projeto-titulo">Cadastro de Aluno</div>
+          <p class="form-projeto-sub">Preencha os dados abaixo para se matricular</p>
+
+          <!-- Linha 1: nome + sobrenome -->
+          <div class="form-linha">
+            <div class="form-grupo">
+              <label for="p-nome">Nome <span>*</span></label>
+              <input type="text" id="p-nome" name="nome" placeholder="Ex: João" required minlength="2" />
+            </div>
+            <div class="form-grupo">
+              <label for="p-sobrenome">Sobrenome <span>*</span></label>
+              <input type="text" id="p-sobrenome" name="sobrenome" placeholder="Ex: Silva" required />
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-grupo">
+            <label for="p-email">E-mail <span>*</span></label>
+            <input type="email" id="p-email" name="email" placeholder="voce@email.com" required />
+            <small>Será usado para enviar seus certificados</small>
+          </div>
+
+          <!-- Telefone + Nascimento -->
+          <div class="form-linha">
+            <div class="form-grupo">
+              <label for="p-tel">Telefone</label>
+              <input type="tel" id="p-tel" name="telefone" placeholder="(38) 99999-9999" />
+            </div>
+            <div class="form-grupo">
+              <label for="p-nasc">Nascimento <span>*</span></label>
+              <input type="date" id="p-nasc" name="nascimento" required />
+            </div>
+          </div>
+
+          <!-- Curso -->
+          <div class="form-grupo">
+            <label for="p-curso">Curso <span>*</span></label>
+            <select id="p-curso" name="curso" required>
+              <option value="">Selecione o curso...</option>
+              <option value="dev-sistemas">Desenvolvimento de Sistemas</option>
+              <option value="enfermagem">Enfermagem</option>
+              <option value="adm">Administração</option>
+              <option value="logistica">Logística</option>
+            </select>
+          </div>
+
+          <hr class="divider" />
+
+          <!-- Turno (radio) -->
+          <div class="form-grupo">
+            <label>Turno preferido <span>*</span></label>
+            <div class="radio-grupo">
+              <label class="radio-item">
+                <input type="radio" name="turno" value="manha" required /> Manhã
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="turno" value="tarde" /> Tarde
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="turno" value="noite" /> Noite
+              </label>
+            </div>
+          </div>
+
+          <!-- Interesses (checkbox) -->
+          <div class="form-grupo">
+            <label>Interesses na área de TI</label>
+            <div class="check-grupo">
+              <label class="check-item">
+                <input type="checkbox" name="interesse" value="web" /> Desenvolvimento Web
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="interesse" value="mobile" /> Mobile
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="interesse" value="dados" /> Banco de Dados
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="interesse" value="redes" /> Redes
+              </label>
+            </div>
+          </div>
+
+          <!-- Horas de estudo (range) -->
+          <div class="form-grupo">
+            <label for="p-horas">Horas de estudo por semana</label>
+            <div class="range-wrap">
+              <input type="range" id="p-horas" name="horas" min="1" max="40" value="10"
+                oninput="document.getElementById('horas-val').textContent = this.value + 'h'" />
+              <span class="range-val" id="horas-val">10h</span>
+            </div>
+          </div>
+
+          <!-- Observações -->
+          <div class="form-grupo">
+            <label for="p-obs">Observações</label>
+            <textarea id="p-obs" name="observacoes" placeholder="Alguma necessidade especial ou informação adicional..."></textarea>
+          </div>
+
+          <!-- Aceitar termos -->
+          <div class="form-grupo">
+            <label class="check-item">
+              <input type="checkbox" name="termos" required />
+              Li e aceito os <a href="#" style="color:var(--accent2);">termos e condições</a> <span>*</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-enviar">Finalizar cadastro →</button>
+          <p class="form-rodape">Campos com <span style="color:var(--accent);font-weight:700;">*</span> são obrigatórios</p>
+        </form>
+
+      </div><!-- /projeto-corpo -->
+    </div><!-- /projeto-box -->
+
+    <div id="sucesso-msg" style="display:none;margin-top:1rem;background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;padding:1.2rem 1.5rem;font-size:0.95rem;color:#14532d;font-weight:600;">
+      ✅ Cadastro enviado com sucesso! (simulação — sem backend)
+    </div>
+
+  </section>
+
+  <!-- ══════════════ SEÇÃO 5 — ROTEIRO ══════════════ -->
+  <section class="secao" id="roteiro">
+    <div class="secao-header">
+      <div class="secao-num">05</div>
+      <h2>Roteiro da aula</h2>
+    </div>
+
+    <div class="roteiro">
+      <div class="roteiro-item">
+        <div class="roteiro-num">01</div>
+        <div class="roteiro-conteudo">
+          <strong>Contexto — por que forms existem? (5 min)</strong>
+          <p>Mostre exemplos reais: login, cadastro, Google Forms, checkout de loja. Toda coleta de dados na web usa &lt;form&gt;.</p>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">02</div>
+        <div class="roteiro-conteudo">
+          <strong>Estrutura básica: form, label, input, button (10 min)</strong>
+          <p>Escreva ao vivo o esqueleto com name, id e label conectado. Mostre o que acontece sem o atributo name no DevTools.</p>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">03</div>
+        <div class="roteiro-conteudo">
+          <strong>Tour pelos tipos de input (15 min)</strong>
+          <p>Vá adicionando cada tipo na página e mostre o comportamento no navegador — especialmente date, range, radio e checkbox.</p>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">04</div>
+        <div class="roteiro-conteudo">
+          <strong>Atributos: required, placeholder, disabled... (10 min)</strong>
+          <p>Adicione required em um campo e tente enviar o form vazio. Mostre a validação nativa do navegador funcionando.</p>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">05</div>
+        <div class="roteiro-conteudo">
+          <strong>Projeto ao vivo — Ficha de Cadastro (30 min)</strong>
+          <p>Construa o formulário do projeto junto com os alunos. Comece sem CSS, depois aplique os estilos progressivamente. Mostre :focus e :invalid ao final.</p>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">06</div>
+        <div class="roteiro-conteudo">
+          <strong>CSS — estados e pseudo-classes (10 min)</strong>
+          <p>Demonstre :focus, :hover, :disabled e :invalid no DevTools. Mostre como o box-shadow cria o efeito de "glow" no foco.</p>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">07</div>
+        <div class="roteiro-conteudo">
+          <strong>Desafio para casa 🏠</strong>
+          <p>Criar um formulário de contato com: nome, email, assunto (select com 3 opções), mensagem (textarea) e botão. Estilizar com CSS próprio.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /page -->
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('sucesso-msg').style.display = 'block';
+    document.getElementById('sucesso-msg').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
