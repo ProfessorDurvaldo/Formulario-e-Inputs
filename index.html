@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+</head>
+<body>
+    <form>
+        <div>
+            <label for="nome-completo">Nome Completo *</label>
+            <input id="nome-completo" autofocus minlength="10" required placeholder="Durvaldo Gonçalves Marques" type="text">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input autocomplete="off" placeholder="dudu@gmail.com" id="email" type="email">
+        </div>
+        <div>
+            <label for="senha">Senha</label>
+            <input id="senha" disabled type="password">
+        </div>
+        <div>
+            <label for="telefone">Telefone</label>
+            <input id="telefone" readonly value="(11) 982129257" pattern="[0-9]{4}" type="tel">
+        </div>
+        <div>
+            <label for="idade">Idade</label>
+            <input id="idade" min="0" max="100" step="5" type="number">
+        </div>
+        <div>
+            <label for="aniversario">Aniversario</label>
+            <input id="aniversario" type="date">
+        </div>
+        <div>
+            <label for="mes">Mês</label>
+            <input id="mes" type="month">
+        </div>
+        <div>
+            <label for="despertador">Despertador</label>
+            <input id="despertador" type="time">
+        </div>
+        <div>
+            <label for="range">Horas por Semana</label>
+            <input id="range" min="0" max="60" step="10" type="range">
+        </div>
+        <div>
+            <label for="termos">Li os termos</label>
+            <input id="termos" type="checkbox">
+        </div>
+        <div>
+            <h3>Dias da semana com checkbox</h3>
+            <label for="segunda-check">Segunda-Feira</label>
+            <input id="segunda-check" type="checkbox">
+            <label for="terca-check">Terça-Feira</label>
+            <input id="terca-check" type="checkbox">
+            <label for="quarta-check">Quarta-Feira</label>
+            <input id="quarta-check" type="checkbox">
+            <label for="quinta-check">Quinta-Feira</label>
+            <input id="quinta-check" type="checkbox">
+            <label for="sexta-check">Sexta-Feira</label>
+            <input id="sexta-check" type="checkbox">
+        </div>
+
+        <div>
+            <h3>Dias da semana com radio</h3>
+            <label for="segunda-radio">Segunda-Feira</label>
+            <input id="segunda-radio" name="dia-semana" type="radio">
+            <label for="terca-radio">Terça-Feira</label>
+            <input id="terca-radio" name="dia-semana" type="radio">
+            <label for="quarta-radio">Quarta-Feira</label>
+            <input id="quarta-radio" name="dia-semana" type="radio">
+            <label for="quinta-radio">Quinta-Feira</label>
+            <input id="quinta-radio" name="dia-semana" type="radio">
+            <label for="sexta-radio">Sexta-Feira</label>
+            <input id="sexta-radio" name="dia-semana" type="radio">
+        </div>
+        <br>
+        <div>
+            <label for="upload">Suba um Arquivo</label>
+            <input id="upload" type="file">
+        </div>
+
+        <div>
+            <label for="cor">Paleta de cores</label>
+            <input id="cor" type="color">
+        </div>
+
+        <div>
+            <label for="dia-semana-select">Dia da Semana</label>
+            <select id="dia-semana-select">
+                <option>Segunda-Feira</option>
+                <option>Terça-Feira</option>
+                <option>Quarta-Feira</option>
+                <option>Quinta-Feira</option>
+                <option>Sexta-Feira</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="text-area">Area de Texto</label>
+            <textarea id="text-area" cols="50" rows="5"></textarea>
+        </div>
+
+        <button type="reset">Limpar</button>
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
