@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercício Avaliativo — Formulários HTML & CSS</title>
+
+  <style>
+    :root {
+      --bg:        #f5f0e8;
+      --surface:   #fffdf7;
+      --border:    #d4c9b0;
+      --text:      #1a1208;
+      --muted:     #7a6e5a;
+      --accent:    #d4500a;
+      --accent2:   #2563eb;
+      --success:   #15803d;
+      --warn:      #b45309;
+      --code-bg:   #1e1a14;
+      --code-text: #e8dcc8;
+      --radius:    10px;
+      --font-body: sans-serif;
+      --font-mono: monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      padding: 3rem 1rem 2.5rem;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 28px, var(--border) 28px, var(--border) 29px);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 1.1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.85rem;
+      border-radius: 99px;
+    }
+    .badge-red   { background: var(--accent); color: #fff; }
+    .badge-blue  { background: var(--accent2); color: #fff; }
+    .badge-dark  { background: var(--text); color: var(--bg); }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      position: relative;
+      margin-bottom: 0.8rem;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    /* ── FICHA TÉCNICA ── */
+    .ficha {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .ficha-item {
+      background: var(--surface);
+      padding: 1rem 1.2rem;
+    }
+    .ficha-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .ficha-valor {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .ficha-valor.destaque { color: var(--accent); font-size: 1.1rem; }
+
+    /* ── SEÇÕES ── */
+    .secao { margin-bottom: 3.5rem; }
+    .secao-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .secao-num {
+      background: var(--text);
+      color: var(--bg);
+      font-size: 0.72rem;
+      font-weight: 800;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+    }
+    .secao-header h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      margin-bottom: 1.2rem;
+      border-left: 4px solid;
+    }
+    .callout strong { display: block; margin-bottom: 0.3rem; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .callout-warn  { background: #fef9ec; border-color: var(--warn); color: #78350f; }
+    .callout-info  { background: #eff6ff; border-color: var(--accent2); color: #1e3a8a; }
+    .callout-ok    { background: #f0fdf4; border-color: #22c55e; color: #14532d; }
+    .callout-tip   { background: #fdf4ff; border-color: #a855f7; color: #581c87; }
+
+    /* ── TABELA DE CRITÉRIOS ── */
+    .tabela-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+    }
+    thead tr { background: var(--text); color: var(--bg); }
+    thead th { padding: 0.75rem 1rem; text-align: left; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    tbody tr { background: var(--surface); border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: #faf7f1; }
+    td { padding: 0.7rem 1rem; vertical-align: top; }
+    td:first-child { font-weight: 700; white-space: nowrap; }
+    .pts {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+    .pts-blue { background: var(--accent2); }
+    .pts-green { background: #16a34a; }
+
+    /* ── LISTA DE REQUISITOS ── */
+    .req-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .req-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .req-list li::before {
+      content: '□';
+      font-size: 1rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .req-list code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: #ede8df;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    /* ── BLOCO DE ENTREGA ── */
+    .entrega-box {
+      background: var(--text);
+      color: var(--bg);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+    }
+    .entrega-box h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .entrega-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .entrega-box li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: #c9bfb0;
+    }
+    .entrega-box li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+    .entrega-box li strong { color: #fff; }
+
+    /* ── GABARITO PROFESSOR ── */
+    .gabarito {
+      background: var(--code-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .gabarito-header {
+      background: #2d2720;
+      padding: 0.5rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #a89880;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .gabarito pre {
+      padding: 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--code-text);
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+    .tag  { color: #f97316; }
+    .atr  { color: #60a5fa; }
+    .vl   { color: #86efac; }
+    .cm   { color: #6b7280; font-style: italic; }
+
+    /* ── RODAPÉ ── */
+    .rodape {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .rodape p { font-size: 0.8rem; color: var(--muted); }
+    .rodape strong { color: var(--text); }
+
+    @media print {
+      .gabarito { display: none; }
+      .callout-tip { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="badge-row">
+      <span class="badge badge-red">Avaliativo</span>
+      <span class="badge badge-blue">HTML &amp; CSS</span>
+      <span class="badge badge-dark">Avaliativo</span>
+    </div>
+    <h1>Formulário de<br><em>Inscrição em Evento</em></h1>
+    <p class="hero-sub">Exercício individual — aplique o que foi visto em aula sobre formulários HTML e estilização com CSS</p>
+  </header>
+
+  <!-- FICHA TÉCNICA -->
+  <div class="ficha">
+    <div class="ficha-item">
+      <div class="ficha-label">Disciplina</div>
+      <div class="ficha-valor">Desenvolvimento de Sistemas</div>
+    </div>
+    <div class="ficha-item">
+      <div class="ficha-label">Tema</div>
+      <div class="ficha-valor">Formulários HTML &amp; CSS</div>
+    </div>
+    <div class="ficha-item">
+      <div class="ficha-label">Entrega</div>
+      <div class="ficha-valor">Individual</div>
+    </div>
+    <div class="ficha-item">
+      <div class="ficha-label">Arquivos</div>
+      <div class="ficha-valor"><span style="font-family:var(--font-mono);font-size:0.85rem">index.html + style.css</span></div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 1 — CONTEXTO -->
+  <section class="secao">
+    <div class="secao-header">
+      <div class="secao-num">01</div>
+      <h2>Contexto do exercício</h2>
+    </div>
+
+    <p style="margin-bottom:1rem;">
+      Você foi contratado para desenvolver a página de inscrição de um <strong>evento de tecnologia da sua cidade</strong>. O organizador precisa coletar algumas informações dos participantes antes do evento, e o formulário deve ser claro, funcional e com visual cuidadoso.
+    </p>
+
+    <div class="callout callout-info">
+      <strong>🎯 Objetivo</strong>
+      Criar dois arquivos (<code>index.html</code> e <code>style.css</code>) que, juntos, formem um formulário de inscrição completo e estilizado. Não é necessário usar JavaScript — o foco é HTML e CSS.
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2 — REQUISITOS HTML -->
+  <section class="secao">
+    <div class="secao-header">
+      <div class="secao-num">02</div>
+      <h2>Requisitos — HTML</h2>
+    </div>
+
+    <p style="margin-bottom:1rem;font-size:0.9rem;color:var(--muted);">
+      Seu formulário deve conter <strong>todos</strong> os campos abaixo, com os atributos indicados corretamente configurados.
+    </p>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Tipo / Elemento</th>
+            <th>Requisitos obrigatórios</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nome completo</td>
+            <td><code>input type="text"</code></td>
+            <td>
+              <code>required</code>, <code>minlength="5"</code>, <code>placeholder</code>, <code>autofocus</code>,
+              <code>label</code> associado com <code>for</code>/<code>id</code>
+            </td>
+          </tr>
+          <tr>
+            <td>E-mail</td>
+            <td><code>input type="email"</code></td>
+            <td><code>required</code>, <code>placeholder</code>, <code>autocomplete="off"</code>, <code>label</code></td>
+          </tr>
+          <tr>
+            <td>Data de nascimento</td>
+            <td><code>input type="date"</code></td>
+            <td><code>required</code>, <code>label</code></td>
+          </tr>
+          <tr>
+            <td>Cidade de origem</td>
+            <td><code>input type="text"</code></td>
+            <td><code>placeholder</code>, <code>label</code></td>
+          </tr>
+          <tr>
+            <td>Área de interesse</td>
+            <td><code>&lt;select&gt;</code></td>
+            <td>
+              Pelo menos <strong>4 opções</strong> (ex: Web, Mobile, IA, Redes), <code>required</code>, <code>label</code>,
+              primeira option vazia como placeholder
+            </td>
+          </tr>
+          <tr>
+            <td>Turno preferido</td>
+            <td><code>input type="radio"</code></td>
+            <td>
+              3 opções (Manhã / Tarde / Noite), mesmo <code>name</code> em todos,
+              cada um com <code>label</code> e <code>id</code> únicos
+            </td>
+          </tr>
+          <tr>
+            <td>Experiência prévia</td>
+            <td><code>input type="checkbox"</code></td>
+            <td>
+              Pelo menos 3 opções (ex: HTML, JavaScript, Python),
+              cada uma com <code>label</code> e <code>id</code> únicos
+            </td>
+          </tr>
+          <tr>
+            <td>Horas de estudo/semana</td>
+            <td><code>input type="range"</code></td>
+            <td><code>min="1"</code>, <code>max="40"</code>, <code>label</code></td>
+          </tr>
+          <tr>
+            <td>Observações</td>
+            <td><code>&lt;textarea&gt;</code></td>
+            <td><code>placeholder</code>, <code>rows</code> e <code>cols</code> definidos, <code>label</code></td>
+          </tr>
+          <tr>
+            <td>Aceitar os termos</td>
+            <td><code>input type="checkbox"</code></td>
+            <td><code>required</code>, <code>label</code> descritivo</td>
+          </tr>
+          <tr>
+            <td>Botões</td>
+            <td><code>&lt;button&gt;</code></td>
+            <td>Um <code>type="submit"</code> e um <code>type="reset"</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>⚠️ Atenção</strong>
+      Todo campo deve ter um <code>&lt;label&gt;</code> corretamente vinculado usando os atributos <code>for</code> e <code>id</code>. Labels soltos, sem vinculação, <strong>não serão considerados</strong>.
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3 — REQUISITOS CSS -->
+  <section class="secao">
+    <div class="secao-header">
+      <div class="secao-num">03</div>
+      <h2>Requisitos — CSS</h2>
+    </div>
+
+    <p style="margin-bottom:1rem;font-size:0.9rem;color:var(--muted);">
+      O CSS deve estar em um arquivo separado (<strong>style.css</strong>), vinculado ao HTML via <code>&lt;link&gt;</code>. Os estilos abaixo são obrigatórios:
+    </p>
+
+    <ul class="req-list" style="margin-bottom:1.4rem;">
+      <li>Estilizar <code>input</code>, <code>select</code> e <code>textarea</code> com <code>border</code>, <code>border-radius</code> e <code>padding</code> consistentes</li>
+      <li>Aplicar efeito visual no <code>:focus</code> dos campos — o campo deve se destacar visivelmente quando o usuário clica nele (borda colorida ou <code>box-shadow</code>)</li>
+      <li>Estilizar o estado <code>:disabled</code> em algum campo — adicione um campo com <code>disabled</code> e aplique um estilo diferente (fundo cinza, cursor <code>not-allowed</code>, etc.)</li>
+      <li>Usar <code>accent-color</code> para dar cor aos <code>checkbox</code>, <code>radio</code> e <code>range</code></li>
+      <li>Estilizar os botões de forma que se destaquem visualmente (cor de fundo, <code>border-radius</code>, <code>cursor: pointer</code>). Os dois botões podem ter estilos diferentes entre si</li>
+      <li>O formulário deve ter largura limitada e estar centralizado na página (uso de <code>max-width</code> + <code>margin</code>)</li>
+    </ul>
+
+    <div class="callout callout-ok">
+      <strong>✅ Dica de ouro</strong>
+      Use as pseudo-classes que vimos em aula: <code>:focus</code>, <code>:disabled</code>, <code>::placeholder</code>. Elas são o coração do CSS para formulários!
+    </div>
+  </section>
+
+  <!-- SEÇÃO 4 — CRITÉRIOS DE CORREÇÃO -->
+  <section class="secao">
+    <div class="secao-header">
+      <div class="secao-num">04</div>
+      <h2>Como será corrigido</h2>
+    </div>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Critério</th>
+            <th>Descrição</th>
+            <th style="text-align:center">Impacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Label vinculado</td>
+            <td>Cada campo tem seu <code>&lt;label for="..."&gt;</code> correspondente ao <code>id</code> do input</td>
+            <td style="text-align:center"><span class="pts">obrigatório</span></td>
+          </tr>
+          <tr>
+            <td>Radio com name</td>
+            <td>Todos os radios de um mesmo grupo compartilham o mesmo atributo <code>name</code></td>
+            <td style="text-align:center"><span class="pts">obrigatório</span></td>
+          </tr>
+          <tr>
+            <td>CSS em arquivo externo</td>
+            <td>Nenhum estilo pode estar inline ou dentro de <code>&lt;style&gt;</code> no HTML</td>
+            <td style="text-align:center"><span class="pts">obrigatório</span></td>
+          </tr>
+          <tr>
+            <td>Campos obrigatórios</td>
+            <td>Campos marcados com <code>required</code> na tabela devem realmente bloquear o envio se vazios</td>
+            <td style="text-align:center"><span class="pts">obrigatório</span></td>
+          </tr>
+          <tr>
+            <td>Identação do código</td>
+            <td>O HTML deve estar corretamente identado (use o Prettier do VS Code se quiser ajuda)</td>
+            <td style="text-align:center"><span class="pts">obrigatório</span></td>
+          </tr>
+          <tr>
+            <td>Criatividade visual</td>
+            <td>Formulário com identidade visual coerente e agradável pode render <strong>pontos extras</strong> a critério do professor</td>
+            <td style="text-align:center"><span class="pts pts-green">✨ bônus</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 5 — ENTREGA -->
+  <section class="secao">
+    <div class="secao-header">
+      <div class="secao-num">05</div>
+      <h2>Entrega</h2>
+    </div>
+
+    <div class="entrega-box">
+      <h3>📁 O que entregar</h3>
+      <ul>
+        <li><strong>index.html</strong> — o formulário com todos os campos solicitados</li>
+        <li><strong>style.css</strong> — o arquivo de estilos separado, vinculado ao HTML</li>
+        <li>Os dois arquivos devem estar na <strong>mesma pasta</strong>, sem subpastas</li>
+        <li>Envie como <strong>.zip</strong> ou pelo canal indicado pelo professor</li>
+        <li>Nomeie o arquivo zip como <strong>seu nome + turma</strong> (ex: <code>joao_silva_T1.zip</code>)</li>
+      </ul>
+    </div>
+  </section>
+
+
+
+  <!-- RODAPÉ -->
+  <footer class="rodape">
+    <p><strong>Proz Educação / JB Cursos</strong> — Desenvolvimento de Sistemas</p>
+    <p>Exercício avaliativo · HTML &amp; CSS</p>
+  </footer>
+
+</div>
+</body>
+</html>
